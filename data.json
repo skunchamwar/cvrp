@@ -1,7 +1,7 @@
 {
     "vehicleCapacity": 220,
+    "depot": {"x": 40, "y": 40},
     "nodes": [
-        {"x": 40, "y": 40, "demand": 0},
         {"x": 22, "y": 22, "demand": 18},
         {"x": 36, "y": 26, "demand": 26},
         {"x": 21, "y": 45, "demand": 11},

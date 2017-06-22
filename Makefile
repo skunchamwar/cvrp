@@ -3,11 +3,17 @@ CFLAGS=-c -Wall
 LDFLAGS=
 LIBS=
 
-SOURCES=main.cpp cvrp_dataModel.cpp jsoncpp.cpp
+SOURCES=main.cpp \
+	cvrp_dataModel.cpp \
+	cvrp_util.cpp \
+	jsoncpp.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=cvrp
 
 all: $(SOURCES) $(EXECUTABLE)
+
+clean :
+	rm -f $(EXECUTABLE) *.o
     
 $(EXECUTABLE): $(OBJECTS) 
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ $(LIBS)
