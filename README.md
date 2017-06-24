@@ -1,4 +1,4 @@
-### cvrp
+# cvrp
 This is a solution for Capacitated Vehicle Routing Problem
 
 ## How to build
@@ -7,7 +7,7 @@ Then run 'cvrp.exe <data file>'
 
 ## How to build unit tests
 
-# Requirements
+### Requirements
 1. you will need to download the latest googletest source from https://github.com/google/googletest
 2. you will need 'pthread' library installed on your computer
 
