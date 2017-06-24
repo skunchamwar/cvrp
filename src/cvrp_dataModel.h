@@ -12,7 +12,7 @@ class DataModel : public IDataModel
         DataModel(std::stringstream& jsonData);
 
         double distanceBetweenClients(int client1Id, int client2Id);
-        int vehicleCapacity() { return m_vehicleCpacity; }
+        int vehicleCapacity() const { return m_vehicleCpacity; }
         Coord& depot() { return m_depot; }
         int getClientDemand(int clientId);
         Coord getClientLocation(int clientId);

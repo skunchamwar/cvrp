@@ -22,7 +22,7 @@ class IDataModel
         virtual ~IDataModel();
 
         virtual double distanceBetweenClients(int client1Id, int client2Id) = 0;
-        virtual int vehicleCapacity() = 0;
+        virtual int vehicleCapacity() const = 0;
         virtual Coord& depot() = 0;
         virtual int getClientDemand(int clientId) = 0;
         virtual Coord getClientLocation(int clientId) = 0;

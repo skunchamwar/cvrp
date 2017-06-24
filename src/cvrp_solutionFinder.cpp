@@ -1,5 +1,4 @@
 #include "cvrp_solutionFinder.h"
-#include <iostream>
 
 namespace cvrp
 {
@@ -9,49 +8,69 @@ SolutionFinder::SolutionFinder(IDataModel* model) : m_model(model)
     model->getClients(m_dnaSequence);
 }
 
-void SolutionFinder::getChromosomes(std::vector<VehicleTrip>& chromosomes)
+void SolutionFinder::getSolution(SolutionModel& solution)
 {
-    // int vehicleCapacity = model->vehicleCapacity();
-    // int currChomosomeCapacity = 0;
-    // std::vector<int>* currChromosome;
-    // for (int i = 0; i < m_dnaSequence.size(); i++)
-    // {
-    //     // We assume a sigle client does not have more demand than vehicle capacity
-    //     if ((currChomosomeCapacity + model->getCapacityOfClient(m_dnaSequence[i])) > vehicleCapacity )
-    //     {
-    //         chromosomes.push_back(*currChromosome);
-    //         currChromosome = new std::vector<int>();
-    //         currChomosomeCapacity = 0;
-    //     }
-    //     else
-    //     {
-    //         currChromosome->push_back(m_dnaSequence[i]);
-    //         currChomosomeCapacity += model->getCapacityOfClient(m_dnaSequence[i]);
-    //     }
-    // }
-
-    chromosomes.push_back(VehicleTrip(m_model));
+    solution.chromosomes().push_back(VehicleTrip(m_model));
     for (unsigned int i = 0; i < m_dnaSequence.size(); i++)
     {
         bool clinetOnTrip = false;
-        for (std::vector<VehicleTrip>::iterator it = chromosomes.begin(); it != chromosomes.end(); ++it)
+        for (SolutionIter it = solution.chromosomes().begin(); it != solution.chromosomes().end(); ++it)
         {
             if(it->canAccommodate(m_dnaSequence[i]))
             {
                 it->addClientToTrip(m_dnaSequence[i]);
                 clinetOnTrip = true;
+                break;
             }
         }
         if (!clinetOnTrip)
         {
-            chromosomes.push_back(VehicleTrip(m_model));
-            chromosomes.back().addClientToTrip(m_dnaSequence[i]);
+            solution.chromosomes().push_back(VehicleTrip(m_model));
+            solution.chromosomes().back().addClientToTrip(m_dnaSequence[i]);
         }
     }
-    for (std::vector<VehicleTrip>::iterator it = chromosomes.begin(); it != chromosomes.end(); ++it)
+    for (SolutionIter it = solution.chromosomes().begin(); it != solution.chromosomes().end(); ++it)
     {
         it->optimiseCost();
     }
+}
+
+bool SolutionFinder::validateSolution(SolutionModel& solution) const
+{
+    std::vector<int> check(m_model->numberOfClients()+1, false);
+    for (ConstSolIter it = solution.chromosomesConst().begin(); it != solution.chromosomesConst().end(); ++it)
+    {
+        if (it->demandCovered() > m_model->vehicleCapacity())
+        {
+            return false;
+        }
+        for (std::vector<int>::const_iterator ite = it->clientSequence().begin(); ite != it->clientSequence().end(); ++ite)
+        {
+            if (check[*ite])
+            {
+                return false;
+            }
+            check[*ite] = true;
+        }
+    }
+    for (unsigned int i = 1; i < check.size(); i++)
+    {
+        if (!check[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+double SolutionFinder::solutionCost(SolutionModel& solution) const
+{
+    double totalCost = 0.0;
+    for (ConstSolIter it = solution.chromosomesConst().begin(); it != solution.chromosomesConst().end(); ++it)
+    {
+        totalCost += it->cost();
+    }
+    return totalCost;
 }
 
 }//cvrp namespace

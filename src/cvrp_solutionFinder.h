@@ -2,7 +2,7 @@
 #define CVRP_SOLUTION_FINDER
 
 #include "cvrp_idataModel.h"
-#include "cvrp_vehicleTrip.h"
+#include "cvrp_solutionModel.h"
 
 namespace cvrp
 {
@@ -11,7 +11,9 @@ class SolutionFinder
     public:
         SolutionFinder(IDataModel* model);
 
-        void getChromosomes(std::vector<VehicleTrip>& chromosomes);
+        void getSolution(SolutionModel& solution);
+        bool validateSolution(SolutionModel& solution) const;
+        double solutionCost(SolutionModel& solution) const;
         std::vector<int>& getDNASequence() { return m_dnaSequence; }
 
     private:

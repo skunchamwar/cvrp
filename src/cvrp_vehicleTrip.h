@@ -10,13 +10,13 @@ class VehicleTrip
     public:
         VehicleTrip(IDataModel* model);
 
-        double cost() { return m_cost; }
-        int demandCovered() { return m_demandCovered; }
+        const double cost() const { return m_cost; }
+        int demandCovered() const { return m_demandCovered; }
 
         bool canAccommodate(int clientId);
         void addClientToTrip(int clientId);
         void optimiseCost();
-        const std::vector<int>& clientSequence() { return m_clientSequence; }
+        const std::vector<int>& clientSequence() const { return m_clientSequence; }
         std::string getTripStr() const;
 
     private:

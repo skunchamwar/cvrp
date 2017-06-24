@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include "cvrp_dataModel.h"
+#include "cvrp_solutionModel.h"
 #include "cvrp_solutionFinder.h"
 
 using namespace cvrp;
@@ -12,16 +13,16 @@ int main(int argc, char *argv[])
     std::stringstream jsonStream;
     jsonStream << dataFile.rdbuf();
     DataModel model(jsonStream);
-    SolutionFinder solution(&model);
+    SolutionFinder solutionFinder(&model);
 
-    std::vector<VehicleTrip> chromosomes;
-    solution.getChromosomes(chromosomes);
+    SolutionModel solution;
+    solutionFinder.getSolution(solution);
 
-    for (std::vector<VehicleTrip>::const_iterator it = chromosomes.begin();
-                it != chromosomes.end(); ++it)
+    if (solutionFinder.validateSolution(solution))
     {
-        std::cout << it->getTripStr() << std::endl;
+        solution.printSolution();
+        std::cout << "Total Cost: " << solutionFinder.solutionCost(solution) << std::endl;
     }
-
+    
     return 0;
 }

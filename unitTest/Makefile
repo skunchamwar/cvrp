@@ -21,6 +21,7 @@ SOURCES=../src/cvrp_util.cpp \
 	../src/cvrp_idataModel.cpp \
 	../src/cvrp_dataModel.cpp \
 	../src/cvrp_vehicleTrip.cpp \
+	../src/cvrp_solutionModel.cpp \
 	../src/cvrp_solutionFinder.cpp \
 	../src/jsoncpp.cpp \
 	cvrp_dataModel.t.cpp \
