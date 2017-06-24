@@ -4,7 +4,10 @@ LDFLAGS=
 LIBS=
 
 SOURCES=main.cpp \
+	cvrp_idataModel.cpp \
 	cvrp_dataModel.cpp \
+	cvrp_vehicleTrip.cpp \
+	cvrp_solutionFinder.cpp \
 	cvrp_util.cpp \
 	jsoncpp.cpp
 OBJECTS=$(SOURCES:.cpp=.o)

@@ -1,0 +1,82 @@
+#include "cvrp_vehicleTrip.h"
+#include "cvrp_util.h"
+
+#include <sstream>
+
+namespace cvrp
+{
+
+VehicleTrip::VehicleTrip(IDataModel* model) : m_model(model)
+{
+    m_demandCovered = 0;
+    m_cost = 0.0;
+}
+
+std::string VehicleTrip::getTripStr() const
+{
+    std::stringstream stream;
+    stream << "x->";
+    for (std::vector<int>::const_iterator ite = m_clientSequence.begin();
+                ite != m_clientSequence.end(); ++ite)
+    {
+        stream << *ite << "->";
+    }
+    stream << "x";
+    return stream.str();
+}
+
+bool VehicleTrip::canAccommodate(int clientId)
+{
+    return ((m_model->getClientDemand(clientId) + m_demandCovered) <= m_model->vehicleCapacity());
+}
+
+void VehicleTrip::addClientToTrip(int clientId)
+{
+    m_clientSequence.push_back(clientId);
+    m_demandCovered += m_model->getClientDemand(clientId);
+}
+
+void VehicleTrip::optimiseCost()
+{
+    m_cost = 0;
+    for (unsigned int i = 0; i < m_clientSequence.size(); i++)
+    {
+        unsigned int nearestClientIndex = i;
+        double leastCost;
+        if (i == 0)
+        {
+            leastCost = m_model->getClientDistanceFromDepot(m_clientSequence[i]);
+        }
+        else
+        {
+            leastCost = m_model->distanceBetweenClients(m_clientSequence[i-1], m_clientSequence[i]);
+        }
+        for (unsigned int j = i+1; j < m_clientSequence.size(); j++)
+        {
+            double currCost;
+            if (i==0)
+            {
+                currCost = m_model->getClientDistanceFromDepot(m_clientSequence[j]);
+            }
+            else
+            {
+                currCost = m_model->distanceBetweenClients(m_clientSequence[i-1], m_clientSequence[j]);
+            }
+
+            if (currCost < leastCost)
+            {
+                leastCost = currCost;
+                nearestClientIndex = j;
+            }
+        }
+
+        if (nearestClientIndex != i)
+        {
+            Util::swapElements(m_clientSequence, i, nearestClientIndex);
+        }
+        m_cost += leastCost;
+    }
+    m_cost += m_model->getClientDistanceFromDepot(m_clientSequence.back());
+}
+
+}//cvrp namespace
