@@ -17,8 +17,8 @@ TEST(SolutionFinder, basicSetup) {
     
     SolutionFinder solution(&model);
 
-    EXPECT_EQ(solution.getDNASequence().size(), 4);
-    ASSERT_THAT(solution.getDNASequence(), ContainerEq(expectedDna));
+    EXPECT_EQ(solution.dnaSequence().size(), 4);
+    ASSERT_THAT(solution.dnaSequence(), ContainerEq(expectedDna));
 }
 
 TEST(SolutionFinder, testBasicSolution) {
