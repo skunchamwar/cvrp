@@ -1,8 +1,8 @@
 {
-    "vehicleCapacity": 220,
-    "depot": {"x": 40, "y": 40},
-    "nodes": [
-        {"x": 22, "y": 22, "demand": 18},
+    "vehicleCapacity": 220, // number of units a vehicle can carry
+    "depot": {"x": 40, "y": 40}, // 'x' and 'y' represent corordinates
+    "nodes": [ // this is list of clients
+        {"x": 22, "y": 22, "demand": 18}, // demand is number of units needed by client
         {"x": 36, "y": 26, "demand": 26},
         {"x": 21, "y": 45, "demand": 11},
         {"x": 45, "y": 35, "demand": 30},
