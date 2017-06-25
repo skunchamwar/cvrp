@@ -125,4 +125,48 @@ void SolutionFinder::crossover(SolutionModel& solution)
     }
 }
 
+SolutionModel SolutionFinder::solutionWithEvolution()
+{
+    SolutionModel solution;
+    getSolution(solution);
+
+    std::vector<SolutionModel> generation;
+    std::vector<SolutionModel> solutions;
+    solutions.push_back(solution);
+    double leastCost = solutionCost(solution);
+    int x = 0;
+    while (x < 100)
+    {
+        bool foundBetterGeneration = false;
+        for(std::vector<SolutionModel>::iterator ite = solutions.begin(); ite != solutions.end(); ++ite)
+        {
+            double startingCost = solutionCost(*ite);
+            for (int i = 0; i < 50; i++)
+            {
+                SolutionModel newSol(*ite);
+                crossover(newSol);
+                double currSolCost = solutionCost(newSol);
+                if (validateSolution(newSol) && currSolCost < startingCost)
+                {
+                    if (currSolCost < leastCost)
+                    {
+                        generation.push_back(newSol);
+                        leastCost = currSolCost;
+                        foundBetterGeneration = true;
+                    }
+                }
+            }
+        }
+        if (foundBetterGeneration)
+        {
+            solutions.clear();
+            solutions = generation;
+            generation.clear();
+        }
+        ++x;
+    }
+
+    return *solutions.begin();
+}
+
 }//cvrp namespace

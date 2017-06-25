@@ -30,20 +30,21 @@ void Util::randomShuffleElements(std::vector<int>& arr)
 }
 
 int Util::generateRandomNumberInRange(int min, int max)
-{   
-    static std::default_random_engine gen; 
+{
 
     // std::random_device rd;
     // static std::mt19937 gen(rd());
     if (randomBool())
     {
+        static std::default_random_engine gen;
         std::uniform_int_distribution<int> distribution(min, max);
         return distribution(gen);
     }
     else
     {
+        static std::default_random_engine gen1;
         std::discrete_distribution<int> distribution(min, max);
-        return distribution(gen);
+        return distribution(gen1);
     }
 }
 
