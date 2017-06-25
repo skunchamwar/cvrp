@@ -30,7 +30,8 @@ int main(int argc, char *argv[])
     std::vector<SolutionModel> solutions;
     solutions.push_back(solution);
     double leastCost = solutionFinder.solutionCost(solution);
-    while (1)
+    int x = 0;
+    while (x < 100)
     {
         bool foundBetterGeneration = false;
         for(std::vector<SolutionModel>::iterator ite = solutions.begin(); ite != solutions.end(); ++ite)
@@ -66,6 +67,7 @@ int main(int argc, char *argv[])
             solutions = generation;
             generation.clear();
         }
+        ++x;
     }
     return 0;
 }
