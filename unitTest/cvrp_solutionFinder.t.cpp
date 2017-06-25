@@ -31,14 +31,14 @@ TEST(SolutionFinder, testBasicSolution) {
     solutionFinder.getSolution(solution);
 
     EXPECT_EQ(solution.chromosomes().size(), 2);
-    EXPECT_EQ(solution.chromosomes()[0].clientSequence().size(), 2);
-    EXPECT_EQ(solution.chromosomes()[1].clientSequence().size(), 2);
+    EXPECT_EQ(solution.chromosomes()[0].clientSeqConst().size(), 2);
+    EXPECT_EQ(solution.chromosomes()[1].clientSeqConst().size(), 2);
 
-    EXPECT_EQ(solution.chromosomes()[0].clientSequence()[0], 2);
-    EXPECT_EQ(solution.chromosomes()[0].clientSequence()[1], 1);
+    EXPECT_EQ(solution.chromosomes()[0].clientSeqConst()[0], 2);
+    EXPECT_EQ(solution.chromosomes()[0].clientSeqConst()[1], 1);
 
-    EXPECT_EQ(solution.chromosomes()[1].clientSequence()[0], 4);
-    EXPECT_EQ(solution.chromosomes()[1].clientSequence()[1], 3);
+    EXPECT_EQ(solution.chromosomes()[1].clientSeqConst()[0], 4);
+    EXPECT_EQ(solution.chromosomes()[1].clientSeqConst()[1], 3);
 
     EXPECT_NEAR(solution.chromosomes()[0].cost(), 54.5762, 0.001);
     EXPECT_NEAR(solution.chromosomes()[1].cost(), 52.7178, 0.001);

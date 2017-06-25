@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "../src/cvrp_util.h"
 
+using ::testing::ContainerEq;
 using namespace cvrp;
 
 TEST(Util, euclideanDistances) 
@@ -12,16 +14,25 @@ TEST(Util, euclideanDistances)
 
 TEST(Util, swapArrayElements)
 {
-    std::vector<int> arr;
-    arr.push_back(3);
-    arr.push_back(5);
-    arr.push_back(2);
-    arr.push_back(1);
-    arr.push_back(6);
+    std::vector<int> arr = {3, 5, 2, 1, 6};
 
     Util::swapElements(arr, 0, 3);
 
     EXPECT_EQ(arr[0], 1);
     EXPECT_EQ(arr[3], 3);
+}
+
+TEST(Util, testSplitAndCascade)
+{
+    std::vector<int> arr1 = {3, 5, 2, 1, 6};
+    std::vector<int> arr2 = {4, 7, 9, 8};
+
+    Util::splitAndCascade(arr1, arr2, 2);
+
+    std::vector<int> exparr1 = {3, 5, 9, 8};
+    std::vector<int> exparr2 = {4, 7, 2, 1, 6};
+
+    ASSERT_THAT(arr1, ContainerEq(exparr1));
+    ASSERT_THAT(arr2, ContainerEq(exparr2));
 }
 

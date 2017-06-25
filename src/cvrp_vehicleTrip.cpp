@@ -21,7 +21,7 @@ std::string VehicleTrip::getTripStr() const
     {
         stream << *ite << "->";
     }
-    stream << "x";
+    stream << "x ------- " << m_demandCovered;
     return stream.str();
 }
 
@@ -30,10 +30,25 @@ bool VehicleTrip::canAccommodate(int clientId)
     return ((m_model->getClientDemand(clientId) + m_demandCovered) <= m_model->vehicleCapacity());
 }
 
+bool VehicleTrip::isValidTrip() const
+{
+    return m_demandCovered <= m_model->vehicleCapacity();
+}
+
 void VehicleTrip::addClientToTrip(int clientId)
 {
     m_clientSequence.push_back(clientId);
     m_demandCovered += m_model->getClientDemand(clientId);
+}
+
+void VehicleTrip::reEvaluateDemandAndCost()
+{
+    m_demandCovered = 0;
+    for (auto i : m_clientSequence)
+    {
+        m_demandCovered += m_model->getClientDemand(i);
+    }
+    optimiseCost();
 }
 
 void VehicleTrip::optimiseCost()

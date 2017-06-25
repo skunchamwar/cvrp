@@ -22,6 +22,21 @@ int main(int argc, char *argv[])
     {
         solution.printSolution();
         std::cout << "Total Cost: " << solutionFinder.solutionCost(solution) << std::endl;
+        std::cout << "##################################################################" << std::endl;
+    }
+
+    double startingCost = solutionFinder.solutionCost(solution);
+    for (int i = 0; i < 100; i++)
+    {
+        SolutionModel newSol(solution);
+        solutionFinder.crossover(newSol);
+        double currSolCost = solutionFinder.solutionCost(newSol);
+        if (solutionFinder.validateSolution(newSol) && currSolCost < startingCost)
+        {
+            newSol.printSolution();
+            std::cout << "Total Cost: " << currSolCost << std::endl;
+            std::cout << "##################################################################" << std::endl;
+        }
     }
     
     return 0;

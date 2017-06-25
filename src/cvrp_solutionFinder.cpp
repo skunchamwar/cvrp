@@ -1,4 +1,6 @@
 #include "cvrp_solutionFinder.h"
+#include "cvrp_util.h"
+#include <iostream>
 
 namespace cvrp
 {
@@ -40,11 +42,11 @@ bool SolutionFinder::validateSolution(SolutionModel& solution) const
     std::vector<int> check(m_model->numberOfClients()+1, false);
     for (ConstSolIter it = solution.chromosomesConst().begin(); it != solution.chromosomesConst().end(); ++it)
     {
-        if (it->demandCovered() > m_model->vehicleCapacity())
+        if (!it->isValidTrip())
         {
             return false;
         }
-        for (std::vector<int>::const_iterator ite = it->clientSequence().begin(); ite != it->clientSequence().end(); ++ite)
+        for (std::vector<int>::const_iterator ite = it->clientSeqConst().begin(); ite != it->clientSeqConst().end(); ++ite)
         {
             if (check[*ite])
             {
@@ -71,6 +73,32 @@ double SolutionFinder::solutionCost(SolutionModel& solution) const
         totalCost += it->cost();
     }
     return totalCost;
+}
+
+void SolutionFinder::crossover(SolutionModel& solution)
+{
+
+    int crossoverSubject1 = Util::generateRandomNumberInRange(1,solution.chromosomes().size()-1);
+    int crossoverSubject2 = Util::generateRandomNumberInRange(1,solution.chromosomes().size()-1);
+    while (crossoverSubject2 == crossoverSubject1)
+    {
+        crossoverSubject2 = Util::generateRandomNumberInRange(1,solution.chromosomes().size()-1);
+    }
+
+    int smallChromosomeSize = solution.chromosomes()[crossoverSubject1].clientSeqConst().size() < solution.chromosomes()[crossoverSubject2].clientSeqConst().size()
+                                ? solution.chromosomes()[crossoverSubject1].clientSeqConst().size()
+                                : solution.chromosomes()[crossoverSubject2].clientSeqConst().size();
+    
+    int crossoverPoint = Util::generateRandomNumberInRange(1,smallChromosomeSize-1);
+
+    std::vector<int>& subject1 = solution.chromosomes()[crossoverSubject1].clientSequence();
+    std::vector<int>& subject2 = solution.chromosomes()[crossoverSubject2].clientSequence();
+
+    Util::splitAndCascade(subject1, subject2, crossoverPoint);
+    for (SolutionIter it = solution.chromosomes().begin(); it != solution.chromosomes().end(); ++it)
+    {
+        it->reEvaluateDemandAndCost();
+    }
 }
 
 }//cvrp namespace

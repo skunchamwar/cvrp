@@ -10,6 +10,8 @@ class Util
     public:
         static double distance(int x1, int y1, int x2, int y2);
         static void swapElements(std::vector<int>& arr, int index1, int index2);
+        static int generateRandomNumberInRange(int min, int max);
+        static void splitAndCascade(std::vector<int>& first, std::vector<int>& second, int splitpoint);
 };
 
 }//cvrp namespace

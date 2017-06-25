@@ -4,7 +4,7 @@ GMOCK_DIR = C:\googletest-release-1.8.0\googlemock
 USER_DIR = .
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include -isystem $(GMOCK_DIR)/include
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall -std=c++11 -Wextra -pthread
 
 LIBS=-lpthread
 

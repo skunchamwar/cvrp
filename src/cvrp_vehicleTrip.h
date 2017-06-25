@@ -16,7 +16,10 @@ class VehicleTrip
         bool canAccommodate(int clientId);
         void addClientToTrip(int clientId);
         void optimiseCost();
-        const std::vector<int>& clientSequence() const { return m_clientSequence; }
+        void reEvaluateDemandAndCost();
+        bool isValidTrip() const;
+        const std::vector<int>& clientSeqConst() const { return m_clientSequence; }
+        std::vector<int>& clientSequence() { return m_clientSequence; }
         std::string getTripStr() const;
 
     private:
