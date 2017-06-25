@@ -12,6 +12,10 @@ class Util
         static void swapElements(std::vector<int>& arr, int index1, int index2);
         static int generateRandomNumberInRange(int min, int max);
         static void splitAndCascade(std::vector<int>& first, std::vector<int>& second, int splitpoint);
+        static void splitAndFlipCascade(std::vector<int>& first, std::vector<int>& second, int splitPoint);
+        static void spliceAndCascade(std::vector<int>& first, std::vector<int>& second, int start, int end);
+        static bool randomBool();
+        static void randomShuffleElements(std::vector<int>& arr);
 };
 
 }//cvrp namespace

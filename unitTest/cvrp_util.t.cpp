@@ -36,3 +36,30 @@ TEST(Util, testSplitAndCascade)
     ASSERT_THAT(arr2, ContainerEq(exparr2));
 }
 
+TEST(Util, testSplitAndFlipCascade)
+{
+    std::vector<int> arr1 = {3, 5, 2, 1, 6};
+    std::vector<int> arr2 = {4, 7, 9, 8};
+
+    Util::splitAndFlipCascade(arr1, arr2, 2);
+
+    std::vector<int> exparr1 = {3, 5, 4, 7};
+    std::vector<int> exparr2 = {9, 8, 2, 1, 6};
+
+    ASSERT_THAT(arr1, ContainerEq(exparr1));
+    ASSERT_THAT(arr2, ContainerEq(exparr2));
+}
+
+TEST(Util, testSpliceAndCascade)
+{
+    std::vector<int> arr1 = {3, 5, 2, 1, 6};
+    std::vector<int> arr2 = {4, 7, 9, 8};
+
+    Util::spliceAndCascade(arr1, arr2, 1, 3);
+
+    std::vector<int> exparr1 = {3, 1, 6, 7, 9};
+    std::vector<int> exparr2 = {4, 8, 5, 2};
+
+    ASSERT_THAT(arr1, ContainerEq(exparr1));
+    ASSERT_THAT(arr2, ContainerEq(exparr2));
+}

@@ -1,6 +1,5 @@
 #include "cvrp_solutionFinder.h"
 #include "cvrp_util.h"
-#include <iostream>
 
 namespace cvrp
 {
@@ -94,7 +93,32 @@ void SolutionFinder::crossover(SolutionModel& solution)
     std::vector<int>& subject1 = solution.chromosomes()[crossoverSubject1].clientSequence();
     std::vector<int>& subject2 = solution.chromosomes()[crossoverSubject2].clientSequence();
 
-    Util::splitAndCascade(subject1, subject2, crossoverPoint);
+    int randomNum = Util::generateRandomNumberInRange(1,10);
+    if (randomNum < 8)
+    {
+        Util::splitAndCascade(subject1, subject2, crossoverPoint);
+    }
+    else //if (randomNum < 9)
+    {
+        Util::splitAndFlipCascade(subject1, subject2, crossoverPoint);
+    }
+    // else
+    // {
+    //     int crossoverPoint2 = Util::generateRandomNumberInRange(1,smallChromosomeSize-2);
+    //     while (crossoverPoint == crossoverPoint2)
+    //     {
+    //         crossoverPoint2 = Util::generateRandomNumberInRange(1,smallChromosomeSize-2);
+    //     }
+    //     if (crossoverPoint2 < crossoverPoint)
+    //     {
+    //         Util::spliceAndCascade(subject1, subject2, crossoverPoint2, crossoverPoint);
+    //     }
+    //     else
+    //     {
+    //         Util::spliceAndCascade(subject1, subject2, crossoverPoint, crossoverPoint2);
+    //     }
+    // }
+
     for (SolutionIter it = solution.chromosomes().begin(); it != solution.chromosomes().end(); ++it)
     {
         it->reEvaluateDemandAndCost();

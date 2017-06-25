@@ -15,7 +15,7 @@ class SolutionFinder
         bool validateSolution(SolutionModel& solution) const;
         double solutionCost(SolutionModel& solution) const;
         void crossover(SolutionModel& solution);
-        std::vector<int>& getDNASequence() { return m_dnaSequence; }
+        std::vector<int>& dnaSequence() { return m_dnaSequence; }
 
     private:
         std::vector<int> m_dnaSequence;
