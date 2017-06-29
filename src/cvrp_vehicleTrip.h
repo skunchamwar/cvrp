@@ -10,10 +10,10 @@ class VehicleTrip
     public:
         VehicleTrip(IDataModel* model);
 
-        const double cost() const { return m_cost; }
+        double cost() const { return m_cost; }
         int demandCovered() const { return m_demandCovered; }
 
-        bool canAccommodate(int clientId);
+        bool canAccommodate(int clientId) const;
         void addClientToTrip(int clientId);
         void optimiseCost();
         void reEvaluateDemandAndCost();

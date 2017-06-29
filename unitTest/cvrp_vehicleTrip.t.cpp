@@ -13,8 +13,8 @@ TEST(VehicleTrip, testCanAccommodate)
     DataModel model(jsonData);
     VehicleTrip trip(&model);
 
-    EXPECT_TRUE(trip.canAccommodate(1));
-    EXPECT_FALSE(trip.canAccommodate(2));
+    EXPECT_TRUE((const)trip.canAccommodate(1));
+    EXPECT_FALSE((const)trip.canAccommodate(2));
 
     trip.addClientToTrip(1);
     EXPECT_EQ(trip.demandCovered(), 18);

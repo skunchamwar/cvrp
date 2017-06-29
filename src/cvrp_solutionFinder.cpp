@@ -12,14 +12,14 @@ SolutionFinder::SolutionFinder(IDataModel* model) : m_model(model)
 void SolutionFinder::getSolution(SolutionModel& solution)
 {
     solution.chromosomes().push_back(VehicleTrip(m_model));
-    for (unsigned int i = 0; i < m_dnaSequence.size(); i++)
+    for (auto clientId : m_dnaSequence)
     {
         bool clinetOnTrip = false;
-        for (SolutionIter it = solution.chromosomes().begin(); it != solution.chromosomes().end(); ++it)
+        for (auto &chromosome : solution.chromosomes())
         {
-            if(it->canAccommodate(m_dnaSequence[i]))
+            if((const)chromosome.canAccommodate(clientId))
             {
-                it->addClientToTrip(m_dnaSequence[i]);
+                chromosome.addClientToTrip(clientId);
                 clinetOnTrip = true;
                 break;
             }
@@ -27,36 +27,37 @@ void SolutionFinder::getSolution(SolutionModel& solution)
         if (!clinetOnTrip)
         {
             solution.chromosomes().push_back(VehicleTrip(m_model));
-            solution.chromosomes().back().addClientToTrip(m_dnaSequence[i]);
+            solution.chromosomes().back().addClientToTrip(clientId);
         }
     }
-    for (SolutionIter it = solution.chromosomes().begin(); it != solution.chromosomes().end(); ++it)
+    for (auto &chromosome : solution.chromosomes())
     {
-        it->optimiseCost();
+        chromosome.optimiseCost();
     }
 }
 
 bool SolutionFinder::validateSolution(SolutionModel& solution) const
 {
     std::vector<int> check(m_model->numberOfClients()+1, false);
-    for (ConstSolIter it = solution.chromosomesConst().begin(); it != solution.chromosomesConst().end(); ++it)
+    check[0] = true;
+    for (auto const &chromosome : solution.chromosomesConst())
     {
-        if (!it->isValidTrip())
+        if (!chromosome.isValidTrip())
         {
             return false;
         }
-        for (std::vector<int>::const_iterator ite = it->clientSeqConst().begin(); ite != it->clientSeqConst().end(); ++ite)
+        for (auto clientId : chromosome.clientSeqConst())
         {
-            if (check[*ite])
+            if (check[clientId])
             {
                 return false;
             }
-            check[*ite] = true;
+            check[clientId] = true;
         }
     }
-    for (unsigned int i = 1; i < check.size(); i++)
+    for (auto flag : check)
     {
-        if (!check[i])
+        if (!flag)
         {
             return false;
         }
@@ -67,9 +68,9 @@ bool SolutionFinder::validateSolution(SolutionModel& solution) const
 double SolutionFinder::solutionCost(SolutionModel& solution) const
 {
     double totalCost = 0.0;
-    for (ConstSolIter it = solution.chromosomesConst().begin(); it != solution.chromosomesConst().end(); ++it)
+    for (auto const &chromosome : solution.chromosomesConst())
     {
-        totalCost += it->cost();
+        totalCost += chromosome.cost();
     }
     return totalCost;
 }
@@ -119,9 +120,9 @@ void SolutionFinder::crossover(SolutionModel& solution)
     //     }
     // }
 
-    for (SolutionIter it = solution.chromosomes().begin(); it != solution.chromosomes().end(); ++it)
+    for (auto &chromosome : solution.chromosomes())
     {
-        it->reEvaluateDemandAndCost();
+        chromosome.reEvaluateDemandAndCost();
     }
 }
 
@@ -138,12 +139,12 @@ SolutionModel SolutionFinder::solutionWithEvolution()
     while (x < 100)
     {
         bool foundBetterGeneration = false;
-        for(std::vector<SolutionModel>::iterator ite = solutions.begin(); ite != solutions.end(); ++ite)
+        for(auto &sol : solutions)
         {
-            double startingCost = solutionCost(*ite);
+            double startingCost = solutionCost(sol);
             for (int i = 0; i < 50; i++)
             {
-                SolutionModel newSol(*ite);
+                SolutionModel newSol(sol);
                 crossover(newSol);
                 double currSolCost = solutionCost(newSol);
                 if (validateSolution(newSol) && currSolCost < startingCost)

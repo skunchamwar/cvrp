@@ -25,7 +25,7 @@ std::string VehicleTrip::getTripStr() const
     return stream.str();
 }
 
-bool VehicleTrip::canAccommodate(int clientId)
+bool VehicleTrip::canAccommodate(int clientId) const
 {
     return ((m_model->getClientDemand(clientId) + m_demandCovered) <= m_model->vehicleCapacity());
 }

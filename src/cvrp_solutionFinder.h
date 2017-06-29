@@ -15,7 +15,7 @@ class SolutionFinder
         bool validateSolution(SolutionModel& solution) const;
         double solutionCost(SolutionModel& solution) const;
         SolutionModel solutionWithEvolution();
-        std::vector<int>& dnaSequence() { return m_dnaSequence; }
+        const std::vector<int>& dnaSequence() { return m_dnaSequence; }
 
     private:
         std::vector<int> m_dnaSequence;
