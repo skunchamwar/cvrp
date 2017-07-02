@@ -6,10 +6,12 @@
 namespace cvrp
 {
 
-DataModel::DataModel(std::stringstream& jsonData) 
+DataModel::DataModel(const std::string& jsonData) 
 {
+    std::stringstream stream;
+    stream << jsonData;
     Json::Value root;
-    jsonData >> root;
+    stream >> root;
     populateData(root);
 }
 

@@ -1,6 +1,6 @@
 CC=g++
-CFLAGS=-c -Wall -std=c++11
-LDFLAGS=
+CFLAGS=-c -Wall -fopenmp -std=c++11 
+LDFLAGS=-fopenmp
 LIBS=
 
 SOURCES=main.cpp \

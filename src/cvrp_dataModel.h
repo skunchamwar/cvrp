@@ -1,6 +1,7 @@
 #ifndef CVRP_DATA_MODEL
 #define CVRP_DATA_MODEL
 
+#include <string>
 #include "cvrp_idataModel.h"
 #include "json/json.h"
 
@@ -9,7 +10,7 @@ namespace cvrp
 class DataModel : public IDataModel
 {
     public:
-        DataModel(std::stringstream& jsonData);
+        DataModel(const std::string& jsonData);
 
         double distanceBetweenClients(int client1Id, int client2Id) const;
         int vehicleCapacity() const { return m_vehicleCpacity; }
