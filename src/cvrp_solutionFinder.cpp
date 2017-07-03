@@ -18,7 +18,7 @@ void SolutionFinder::getSolution(SolutionModel& solution)
         bool clinetOnTrip = false;
         for (auto &chromosome : solution.chromosomes())
         {
-            if((const)chromosome.canAccommodate(clientId))
+            if(chromosome.canAccommodate(clientId))
             {
                 chromosome.addClientToTrip(clientId);
                 clinetOnTrip = true;
@@ -104,7 +104,7 @@ void SolutionFinder::crossover(SolutionModel& solution)
     {
         Util::splitAndFlipCascade(subject1, subject2, crossoverPoint);
     }
-    else
+    else if (smallChromosomeSize > 3)
     {
         int crossoverPoint2 = Util::generateRandomNumberInRange(1,smallChromosomeSize-2);
         while (crossoverPoint == crossoverPoint2)
@@ -131,7 +131,7 @@ SolutionModel SolutionFinder::solutionWithEvolution()
 {
     SolutionModel finalSolution;
     SolutionModel solution;
-    //Util::randomShuffleElements(m_dnaSequence);
+    Util::randomShuffleElements(m_dnaSequence);
     getSolution(solution);
 
     std::vector<SolutionModel> generation;
@@ -139,7 +139,7 @@ SolutionModel SolutionFinder::solutionWithEvolution()
     solutions.push_back(solution);
     double leastCost = solutionCost(solution);
     int x = 0;
-    while (x < 500)
+    while (1)
     {
         bool foundBetterGeneration = false;
         for(auto &sol : solutions)
@@ -156,9 +156,9 @@ SolutionModel SolutionFinder::solutionWithEvolution()
                     {
                         leastCost = currSolCost;
                         finalSolution = newSol;
-                        // newSol.printSolution();
-                        // std::cout << "Ttal Cost: " << solutionCost(newSol) << std::endl;
-                        // std::cout << "##################################################################" << std::endl;
+                        newSol.printSolution();
+                        std::cout << "Total Cost: " << solutionCost(newSol) << std::endl;
+                        std::cout << "##################################################################" << std::endl;
                     }
                     if (currSolCost < (leastCost + 40.0))
                     {
